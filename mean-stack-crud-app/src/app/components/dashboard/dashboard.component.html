@@ -1,0 +1,216 @@
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+<body class="home">
+    <div class="container-fluid display-table">
+        <div class="row display-table-row">
+            <div class="col-md-2 col-sm-1 hidden-xs display-table-cell v-align box" id="navigation">
+                <div class="logo">
+                    <a hef="home.html"><img src="../../../assets/images/logo.png" alt="merkery_logo" class="hidden-xs hidden-sm">
+                        <img src="../../../assets/images/logo.png" alt="merkery_logo" class="visible-xs visible-sm circle-logo">
+
+                    </a>
+                </div>
+                <div class="navi">
+                    <ul>
+                        <li class="active"><a routerLink="/dashboard/{{ids}}" (click)="Home()"><i class="fa fa-home" aria-hidden="true"></i><span class="hidden-xs hidden-sm" aria-hidden="true">Home</span></a></li>
+                        <li><a routerLink="/practiceschedule/{{ids}}" ><i class="fa fa-tasks" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Practice Sessions</span></a></li>
+                        <li><a routerLink="/match/{{ids}}"><i class="fa fa-bar-chart" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Matches</span></a></li>
+                        <li><a href="#"><i class="fa fa-user" aria-hidden="true"></i><span class="hidden-xs hidden-sm">Statistics</span></a></li>
+                       
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-10 col-sm-11 display-table-cell v-align">
+                <!--<button type="button" class="slide-toggle">Slide Toggle</button> -->
+                <div class="row">
+                    <header>
+                        <div class="col-md-7">
+                            <nav class="navbar-default pull-left">
+                                <div class="navbar-header">
+                                    <button type="button" class="navbar-toggle collapsed" data-toggle="offcanvas" data-target="#side-menu" aria-expanded="false">
+                                        <span class="sr-only">Toggle navigation</span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                    </button>
+                                </div>
+                            </nav>
+                            <div class="search" id="search">
+                                <div>
+                                    <input type="text" id="myInput" onkeyup="myFunction()" list="courses" placeholder="Search " title="Type in a name" required>
+
+                                </div>
+                            </div>
+                        </div>
+           
+                    </header>
+                </div>
+                <div class="user-dashboard">
+                    <h1>Hello, {{this.currentUser.firstname}}</h1>
+                   
+
+                   <div class="row justify-content-center" *ngIf="firsttime2==true">
+                    <div class="col-md-4 register-employee">
+                      <!-- form card register -->
+                      <div class="card card-outline-secondary">
+                        <div class="card-header">
+                          <h2 class="mb-0">Your final steps</h2>
+                        </div>
+                        <div class="card-body">
+                          <form [formGroup]="editForm" (ngSubmit)="onSubmit()">
+
+                           
+ 
+                            <div class="form-group">
+                              <label for="inputPassword3">Ranking of Opponent</label>
+                              <select class="custom-select form-control" (change)="updateRank($event.target.value)"
+                                formControlName="rankingOpponent">
+                                <option value="">Choose...</option>
+                                <option *ngFor="let ranking of Ranks" value="{{ranking}}">{{ranking}}
+                                </option>
+                              </select>
+                              <!-- error -->
+                              <div class="invalid-feedback" *ngIf="submitted && myForm.rankingOpponent.errors?.required">
+                                Choose Rank of Opponent.
+                              </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputName">Start Time</label>
+                                <input class="form-control" type="time" formControlName="timings">
+                                <div class="invalid-feedback" *ngIf="submitted && myForm.timings.errors?.required">
+                                    timings is required.
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <label for="inputName">End Time</label>
+                                <input class="form-control" type="time" formControlName="endTime">
+                                <div class="invalid-feedback" *ngIf="submitted && myForm.endTime.errors?.required">
+                                    End timings is required.
+                                </div>
+                              </div>
+                 
+                           
+                            <div class="form-group">
+                              <button class="btn btn-success btn-lg btn-block" type="submit">Submit</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div><!-- form  -->
+                    </div>
+
+
+                  </div>
+
+                
+                
+                  <div class="row justify-content-center" >
+                    <div class="col-md-4 register-employee">
+                      <!-- form card register -->
+                      <div class="card card-outline-secondary">
+                        <div class="card-header">
+                          <h3 class="mb-0">Your final steps</h3>
+                        </div>
+                        <div class="card-body">
+                          <form [formGroup]="attendanceForm" (ngSubmit)="SubmitAttendance()">
+                            <!-- <div class="form-group"> -->
+                                <mat-checkbox value="checked" (click)="changeValue(checked)" color="primary" 
+                                >Mark Your attendance</mat-checkbox>
+                              <!-- </div> -->
+                              <div class="form-group">
+                                <label for="inputName">Set Priorities of Games</label>
+                                <input class="form-control" type="text" formControlName="priority">
+                                <option *ngFor="let game of currentUser.games; let i = index" value="{{game}}">{{game.name}}</option>
+                              
+                              </div>
+                            
+                        
+                           
+                            <div class="form-group" *ngIf="checked">
+                              <button class="btn btn-success btn-lg btn-block" type="submit">Submit</button>
+                            </div>
+
+                          </form>
+                        </div>
+                      </div><!-- form  -->
+                    </div>
+
+
+                  </div>
+
+                 
+
+
+
+
+                  <div class="card-body" *ngIf="firsttime2==false">
+                  
+
+
+                    <!-- (change)="updateOpponent($event.target.value)" -->
+                  <label for="inputPassword3">Choose Your Opponent</label>
+                  <select class="custom-select form-control" [(ngModel)]="Opponent">
+                  
+          
+                    <!-- <div *ngFor="let match of oppGames">
+                        {{match}}
+                    </div> -->
+                    <option *ngFor="let user of Opponents" [ngValue]="user">{{user.firstname}} {{user.games[1].name}}
+                    
+                    </option>
+                
+                  </select>
+                  <button class="btn btn-success btn-lg btn-block" (click)="createMatch()">Request for Match</button>
+
+                </div>
+
+                
+                
+
+
+
+                  <button class="btn btn-success btn-lg btn-block" (click)="createSchedule()">Request for Practice Sessions</button>
+
+
+
+                </div>
+            </div>
+        </div>
+
+  
+
+    </div>
+   
+
+
+    <!-- Modal -->
+    <div id="add_project" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header login-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h4 class="modal-title">Add Project</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="text" placeholder="Project Title" name="name">
+                    <input type="text" placeholder="Post of Post" name="mail">
+                    <input type="text" placeholder="Author" name="passsword">
+                    <textarea placeholder="Desicrption"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="cancel" data-dismiss="modal">Close</button>
+                    <button type="button" class="add-project" data-dismiss="modal">Save</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>

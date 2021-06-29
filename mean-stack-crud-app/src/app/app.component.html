@@ -1,0 +1,11 @@
+<div>
+  <nav class="my-2 my-md-0 mr-md-3">
+    <a *ngIf="!this.authService.isLoggedIn" class="p-2 text-dark" routerLinkActive="active" routerLink="/login">Sign
+      in</a>
+  </nav>
+  <a *ngIf="!this.authService.isLoggedIn" class="btn btn-outline-primary" routerLinkActive="active"
+    routerLinkActive="active" routerLink="/signup">Sign up</a>
+  <button (click)="logout()" *ngIf="this.authService.isLoggedIn" type="button" class="btn btn-danger">Logout</button>
+</div>
+
+<router-outlet></router-outlet>
